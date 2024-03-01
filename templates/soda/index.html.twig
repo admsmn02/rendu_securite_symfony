@@ -1,57 +1,62 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Liste des Sodas{% endblock %}
+{% block title %}Liste des Sodas
+{% endblock %}
 
 {% block body %}
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
+	<style>
+		.product-card {
+			border: 1px solid #dddddd;
+			border-radius: 5px;
+			padding: 15px;
+			margin-bottom: 20px;
+			width: 300px;
+			display: inline-block;
+			vertical-align: top;
+		}
 
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
+		.product-card img {
+			width: 200px; /* Adjust the width as needed */
+			height: 200px; /* Adjust the height as needed */
+			object-fit: cover; /* This will ensure the image covers the area without distorting its aspect ratio */
+		}
 
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-    </style>
-    {% include 'layout/header.html.twig' %}
-    <h1>Liste des Sodas</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Prix</th>
-                <th>Quantité</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for soda in sodas %}
-                <tr>
-                    <td>{{ soda.name }}</td>
-                    <td>{{ soda.price }}</td>
-                    <td>{{ soda.quantity}}</td>
-                    <td>
-                        <a href="{{ path('show', {'slug': soda.slug}) }}" class="btn btn-primary">View</a>
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <a href="{{ path('edit', {'slug': soda.slug}) }}" class="btn btn-warning">Modify</a>
-                            <form action="{{ path('delete', {'slug': soda.slug}) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ soda.id) }}">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="4">Aucun soda trouvé.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+		.product-card h3 {
+			margin: 0 0 10px;
+		}
+
+		.product-card p {
+			margin: 0 0 10px;
+		}
+
+		.product-card .actions {
+			margin-top: 10px;
+		}
+	</style>
+	{% include 'layout/header.html.twig' %}
+	<h1>Liste des Sodas</h1>
+	<div class="product-container">
+		{% for soda in sodas %}
+			<div class="product-card">
+				<img src="{{ 'images/' ~ soda.imagePath }}" alt="{{ soda.name }}">
+				<h3>{{ soda.name }}</h3>
+				<p>Prix:
+					{{ soda.price }}</p>
+				<p>Quantité:
+					{{ soda.quantity }}</p>
+				<div class="actions">
+					<a href="{{ path('show', {'slug': soda.slug}) }}" class="btn btn-primary">View</a>
+					{% if is_granted('ROLE_ADMIN') %}
+						<a href="{{ path('edit', {'slug': soda.slug}) }}" class="btn btn-warning">Modify</a>
+						<form action="{{ path('delete', {'slug': soda.slug}) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this item?');">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ soda.id) }}">
+							<button type="submit" class="btn btn-danger">Delete</button>
+						</form>
+					{% endif %}
+				</div>
+			</div>
+		{% else %}
+			<p>Aucun soda trouvé.</p>
+		{% endfor %}
+	</div>
 {% endblock %}

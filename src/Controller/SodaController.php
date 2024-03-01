@@ -33,15 +33,29 @@ class SodaController extends AbstractController
         $soda = new Soda();
         $form = $this->createForm(SodaType::class, $soda);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
-            $soda->setSlug($soda->getName() . '-' . uniqid());
+    
+            // Handle the image upload
+            $image = $form->get('imagePath')->getData();
+            if ($image) {
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename.'-'.uniqid().'.'.$image->guessExtension();
+                $image->move(
+                    $this->getParameter('images'),
+                    $newFilename
+                );
+    
+                $soda->setImagePath($newFilename);
+            }
+            $soda->setSlug(strtolower(str_replace(' ', '-', $soda->getName())) . '-' . uniqid());
+    
             $em->persist($soda);
             $em->flush();
-
+    
             return $this->redirectToRoute('soda_index');
         }
-
+    
         return $this->render('soda/new.html.twig', [
             'soda' => $soda,
             'form' => $form->createView(),
@@ -66,7 +80,20 @@ class SodaController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Optionally, update the slug if the name has changed
             // $soda->setSlug($soda->getName() . '-' . uniqid());
+
+            $image = $form->get('imagePath')->getData();
+            if ($image) {
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename.'-'.uniqid().'.'.$image->guessExtension();
+                $image->move(
+                    $this->getParameter('images'),
+                    $newFilename
+                );
     
+                $soda->setImagePath($newFilename);
+            }
+            
+            $em->persist($soda);
             $em->flush();
     
             return $this->redirectToRoute('soda_index');

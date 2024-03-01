@@ -30,27 +30,7 @@ class SodaFixtures extends Fixture
             'Sprite Lemon',
             'Fanta Grape',
             'Mountain Dew Blue Raspberry',
-            'Dr Pepper Berry',
-            'Aquarius Grape',
-            'Coca-Cola Vanilla',
-            'Pepsi Twist Lemon',
-            'Sprite Grape',
-            'Fanta Strawberry',
-            'Mountain Dew Tropical Twist',
-            'Dr Pepper Cherry Vanilla',
-            'Aquarius Berry',
-            'Coca-Cola Cherry Vanilla',
-            'Pepsi Twist Berry',
-            'Sprite Berry',
-            'Fanta Berry',
-            'Mountain Dew Tropical Twist Berry',
-            'Dr Pepper Berry Vanilla',
-            'Aquarius Berry Vanilla',
-            'Coca-Cola Berry Vanilla',
-            'Pepsi Twist Berry Vanilla',
-            'Sprite Berry Vanilla',
-            'Fanta Berry Vanilla',
-            'Mountain Dew Tropical Twist Berry Vanilla'
+            'Dr Pepper Berry'
         ];
     
         foreach ($sodaNames as $name) {
@@ -59,6 +39,8 @@ class SodaFixtures extends Fixture
             $soda->setPrice(rand(1, 3));
             $soda->setQuantity(rand(50, 150));
             $soda->setSlug(strtolower(str_replace(' ', '-', $name)) . '-' . uniqid());
+            $imageName = strtolower(str_replace(' ', '-', $name)) . '.jpg';
+            $soda->setImagePath($imageName);
             $manager->persist($soda);
         }
     
