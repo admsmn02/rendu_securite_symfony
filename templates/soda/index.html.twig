@@ -38,11 +38,13 @@
                     <td>{{ soda.quantity}}</td>
                     <td>
                         <a href="{{ path('show', {'slug': soda.slug}) }}" class="btn btn-primary">View</a>
-                        <a href="{{ path('edit', {'slug': soda.slug}) }}" class="btn btn-warning">Modify</a>
-                        <form action="{{ path('delete', {'id': soda.id}) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ soda.id) }}">
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('edit', {'slug': soda.slug}) }}" class="btn btn-warning">Modify</a>
+                            <form action="{{ path('delete', {'slug': soda.slug}) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ soda.id) }}">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        {% endif %}
                     </td>
                 </tr>
             {% else %}

@@ -41,5 +41,9 @@
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <a href="{{ path('app_logout') }}" class="nav-link">Logout</a>
         {% endif %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('new') }}" class="nav-link">Create Soda</a>
+        {% endif %}
+
     </div>
 </nav>

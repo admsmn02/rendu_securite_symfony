@@ -27,6 +27,7 @@ class SodaController extends AbstractController
     }
 
     #[Route('/soda/new', name: 'new', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_ADMIN")]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
         $soda = new Soda();
@@ -47,7 +48,7 @@ class SodaController extends AbstractController
         ]);
     }
 
-    #[Route('/soda/{slug}', name: 'show', methods: ['GET'])]
+    #[Route('/soda/show/{slug}', name: 'show', methods: ['GET'])]
     public function show(Soda $soda): Response
     {
         return $this->render('soda/show.html.twig', [
@@ -55,7 +56,8 @@ class SodaController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug}/edit', name: 'edit', methods: ['GET', 'POST'])]
+    #[Route('/soda/edit/{slug}', name: 'edit', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_ADMIN")]
     public function edit(Request $request, Soda $soda, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(SodaType::class, $soda);
@@ -76,7 +78,8 @@ class SodaController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'delete', methods: ['POST'])]
+    #[Route('/soda/delete/{slug}', name: 'delete', methods: ['POST'])]
+    #[IsGranted("ROLE_ADMIN")]
     public function delete(Request $request, Soda $soda, EntityManagerInterface $em): Response
     {
         if ($this->isCsrfTokenValid('delete'.$soda->getId(), $request->request->get('_token'))) {

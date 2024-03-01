@@ -44,7 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setEmail(string $email): static
     {
-        $this->email = $email;
+        $this->email = htmlspecialchars($email, ENT_QUOTES, 'UTF-8');
 
         return $this;
     }
@@ -93,7 +93,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setPassword(string $password): static
     {
-        $this->password = $password;
+        $this->password = htmlspecialchars($password, ENT_QUOTES, 'UTF-8');
 
         return $this;
     }

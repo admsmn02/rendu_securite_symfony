@@ -37,8 +37,8 @@ class Soda
 
     public function setName(string $name): static
     {
-        $this->name = $name;
-
+        $this->name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+    
         return $this;
     }
 
@@ -49,10 +49,10 @@ class Soda
 
     public function setQuantity(int $quantity): static
     {
-        $this->quantity = $quantity;
-
+        $this->quantity = htmlspecialchars($quantity, ENT_QUOTES, 'UTF-8');
+    
         return $this;
-    }
+    }    
 
     public function getPrice(): ?float
     {
@@ -61,7 +61,7 @@ class Soda
 
     public function setPrice(float $price): static
     {
-        $this->price = $price;
+        $this->price = htmlspecialchars($price, ENT_QUOTES, 'UTF-8');
 
         return $this;
     }
