@@ -3,7 +3,38 @@
 {% block title %}Détails du Soda{% endblock %}
 
 {% block body %}
-    <h1>{{ soda.name }}</h1>
-    <p>Marque: {{ soda.name }}</p>
-    <p>Prix: {{ soda.price }}</p>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .product-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .product-container h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .product-container p {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .product-container p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+
+    <div class="product-container">
+        <h1>{{ soda.name }}</h1>
+        <p>Nom: {{ soda.name }}</p>
+        <p>Prix: {{ soda.price }}</p>
+    </div>
 {% endblock %}
