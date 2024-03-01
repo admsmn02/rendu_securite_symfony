@@ -40,6 +40,14 @@ cp .env .env.local
 
 2. Access the application in your web browser at `http://localhost:8000`.
 
+3. To login as a normal user : 
+  - email : user2@example.com
+  - password : password
+
+4. To login as an admin : 
+  - email : user1@example.com
+  - password : password
+
 
 # Maintenance
 
@@ -65,4 +73,16 @@ And the `new` and `edit` methods specify the allowed HTTP methods in their route
 
 ```php
 #[Route('/soda/new', name: 'new', methods: ['GET', 'POST'])]
+```
+
+Make sure to not allow simple Users to access every routes and pages.
+In order to do so, you will have to modify the security.yaml, and manage every routes: 
+```yaml
+    access_control:
+        - { path: /login, roles: PUBLIC_ACCESS }
+        - { path: /register, roles: PUBLIC_ACCESS}
+        - { path: '^/soda/edit', roles: ROLE_ADMIN }
+        - { path: '^/soda/new', roles: ROLE_ADMIN }
+        - { path: '^/soda/delete', roles: ROLE_ADMIN }
+        - { path: /, roles: ROLE_USER }
 ```

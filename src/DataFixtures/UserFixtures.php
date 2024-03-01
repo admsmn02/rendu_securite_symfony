@@ -4,29 +4,37 @@ namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use App\Entity\User; // Assuming you have a User entity in App\Entity
+use App\Entity\User; 
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture
 {
+    public function __construct(
+        private UserPasswordHasherInterface $userPasswordHasher
+    )
+    {
+    }
+
     public function load(ObjectManager $manager): void
     {
-        // Create a normal user
-        $user = new User();
-        $user->setEmail('normalUser@example.com');
-        $user->setPassword('normalUserPassword'); // Make sure to hash the password in a real application
-        $user->setRoles(['ROLE_USER']); // Assuming 'ROLE_USER' is the role for a normal user
+        for ($i = 1; $i <=10; $i++) {
+            $user = new User();
+            $user->setEmail('user' . $i . '@example.com');
+            $user->setPassword(
+                $this->userPasswordHasher->hashPassword(
+                    $user,
+                    'password'
+                )
+            );
 
-        // Create an admin user
-        $admin = new User();
-        $admin->setEmail('adminUser@example.com');
-        $admin->setPassword('adminUserPassword'); // Make sure to hash the password in a real application
-        $admin->setRoles(['ROLE_ADMIN']); // Assuming 'ROLE_ADMIN' is the role for an admin user
+            if ($i == 1) {
+                $user->setRoles(['ROLE_ADMIN']);
+            } else {
+                $user->setRoles(['ROLE_USER']);
+            }
 
-        // Persist the users
-        $manager->persist($user);
-        $manager->persist($admin);
-
-        // Flush the manager to save the users
+            $manager->persist($user);
+        }
         $manager->flush();
     }
 }
